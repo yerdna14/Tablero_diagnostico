@@ -6,7 +6,7 @@ import plotly.express as px
 # CONFIGURACIÓN DE LA PÁGINA (siempre primero)
 # ==========================================
 st.set_page_config(
-    page_title="1mer Tablero Diagnostico Comunidades",
+    page_title="Diagnostico Comunidades",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -33,7 +33,7 @@ df = load_data()
 # ==========================================
 # TÍTULO Y DESCRIPCIÓN
 # ==========================================
-st.title("📊 Dashboard de Caracterización - Arauca")
+st.title("📊 1mer Tablero Diagnostico Comunidades")
 st.markdown("Visualización interactiva de las variables principales del formulario.")
 st.markdown("---")
 
