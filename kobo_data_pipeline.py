@@ -53,6 +53,15 @@ def descargar_datos(token, uid, base_url):
     print(f"✅ Descargados {len(df)} registros.")
     return df
 
+def procesar_ubicacion(df, col_geopoint='_geolocation'):
+    """Extrae lat, lon, alt y precisión de una columna geopoint."""
+    if col_geopoint not in df.columns:
+        print(f"⚠️ Columna '{col_geopoint}' no encontrada. No se procesará ubicación.")
+        return df
+    # Split y convertir a float
+    df[['lat','lon','alt','gps_precision']] = df[col_geopoint].str.split(' ', expand=True).astype(float)
+    return df
+    
 def limpiar_datos(df):
     """Aplica las transformaciones de limpieza del notebook."""
     columnas_interes = [
