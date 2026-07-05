@@ -30,7 +30,7 @@ df = load_data()
 # ==========================================
 # TÍTULO Y DESCRIPCIÓN
 # ==========================================
-st.title("📊 Dashboard de Caracterización - Arauca")
+st.title("📊 Dashboard de Caracterización - OCAD PAZ")
 st.markdown("Visualización interactiva de las variables principales del formulario.")
 st.markdown("---")
 
