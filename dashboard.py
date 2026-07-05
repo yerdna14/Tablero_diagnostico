@@ -183,16 +183,28 @@ for var in variables:
 # ==========================================
 # MAPA (si existen coordenadas)
 # ==========================================
+
+import plotly.express as px
+
+# En dashboard.py
 if 'lat' in df_filtrado.columns and 'lon' in df_filtrado.columns:
-    map_data = df_filtrado[['lat', 'lon']].dropna()
+    map_data = df_filtrado[['lat', 'lon', 'nombre', 'sexo', 'genero']].dropna()
     if not map_data.empty:
-        st.markdown("### 🗺️ Ubicación de los registros")
-        st.map(map_data, width='stretch')
+        st.subheader("📍 Ubicación de los encuestados")
+        # Crear mapa con Plotly
+        fig = px.scatter_mapbox(
+            map_data,
+            lat='lat',
+            lon='lon',
+            hover_name='nombre',
+            hover_data={'sexo': True, 'genero': True},
+            color='sexo',  # O cualquier otra variable categórica
+            color_discrete_sequence=px.colors.qualitative.Set2,
+            zoom=6,
+            height=500,
+            mapbox_style="open-street-map"  # Estilo gratuito y sin necesidad de token
+        )
+        fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+        st.plotly_chart(fig, width='stretch')
     else:
         st.info("No hay datos de ubicación disponibles.")
-
-# ==========================================
-# PIE DE PÁGINA
-# ==========================================
-st.markdown("---")
-st.caption("Dashboard generado con Streamlit y Plotly • Datos procesados desde KoboToolbox")
