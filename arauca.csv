@@ -1,4 +1,3 @@
-,nombre,organizacion_r,representante,fecha_N,T_Identificacion,N_identificion,departamento,municipio,escolaridad,discapacidad,campesinado,cuidado_mas,cuidado_n,g_poblacional,E_paz,sexo,genero,O_sexual,T_productor,extencion,organizacion_nom,nit,pais_o,E_civil,tierras,personas_n
-0,Andrey,concejo_comunitario,0.0,1981-07-14,cedula,112.0,Amazonas,857,ninguna,ninguna,1,0,0,ninguno,ninguna,mujer,femenino,homosexual,mediana,0,CC Yur,111.0,Colombia,soltera_o,0.0,4.0
-1,Andrey,concejo_comunitario,0.0,1945-11-21,cedula,112.0,Amazonas,857,primaria,ninguna,0,0,0,ninguno,ninguna,mujer,femenino,heterosexual,,,CC Yur,111.0,Colombia,soltera_o,0.0,
-2,Javier,concejo_comunitario,0.0,2001-06-20,cedula,221.0,Antioquia,6,primaria,ninguna,0,1,0,ninguno,ninguna,mujer,femenino,heterosexual,,,CC Rap,222.0,Colombia,soltera_o,0.0,4.0
+nombre,organizacion_r,representante,fecha_N,T_Identificacion,N_identificion,departamento,municipio,escolaridad,discapacidad,campesinado,cuidado_mas,cuidado_n,g_poblacional,E_paz,sexo,genero,O_sexual,organizacion_nom,nit,pais_o,E_civil,tierras,personas_n,_geolocation,edad,lat,lon
+Andrey,concejo_comunitario,0,2000-06-20,cedula,112,Amazonas,855,primaria,ninguna,0,1,0,ind_gena,ninguna,intersexual,no_sabe__no_responde,queer,CC Yur,111,Colombia,soltera_o,0,5,"[3.406152, -76.505527]",26,3.406152,-76.505527
+Javier,concejo_comunitario,0,2004-06-11,cedula,221,Amazonas,855,ninguna,ninguna,0,0,0,ninguno,victima,indeterminada,transgenero,asexual,CC Rap,222,Colombia,soltera_o,0,5,"[3.408385, -76.503999]",22,3.408385,-76.503999

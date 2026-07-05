@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Configuración de la página (siempre primero)
+# ==========================================
+# CONFIGURACIÓN DE LA PÁGINA (siempre primero)
+# ==========================================
 st.set_page_config(
     page_title="Dashboard Arauca",
     page_icon="📊",
@@ -16,10 +18,11 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('arauca.csv', index_col=0)
+        df = pd.read_csv('arauca.csv')
         # Asegurar que las columnas numéricas sean float (si es necesario)
-        # df[['personas_n','N_identificion','representante','tierras','nit']] = \
-        #     df[['personas_n','N_identificion','representante','tierras','nit']].astype(float)
+        for col in ['personas_n', 'N_identificion', 'representante', 'tierras', 'nit', 'lat', 'lon']:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
         return df
     except FileNotFoundError:
         st.error("No se encontró el archivo 'arauca.csv'. Asegúrate de que esté en el mismo directorio.")
@@ -30,7 +33,7 @@ df = load_data()
 # ==========================================
 # TÍTULO Y DESCRIPCIÓN
 # ==========================================
-st.title("📊 Dashboard de Caracterización - OCAD PAZ")
+st.title("📊 Dashboard de Caracterización - Arauca")
 st.markdown("Visualización interactiva de las variables principales del formulario.")
 st.markdown("---")
 
@@ -168,7 +171,7 @@ for var in variables:
         with st.expander("📋 Ver tabla de frecuencias"):
             st.dataframe(
                 conteo,
-                use_container_width=True,   # Este todavía es válido, pero puedes cambiarlo a width='stretch' si quieres
+                use_container_width=True,
                 hide_index=True,
                 column_config={
                     "Categoría": "Categoría",
@@ -181,30 +184,70 @@ for var in variables:
     col_idx += 1
 
 # ==========================================
-# MAPA (si existen coordenadas)
+# MAPA DE UBICACIONES (interactivo con Plotly)
 # ==========================================
-
-import plotly.express as px
-
-# En dashboard.py
 if 'lat' in df_filtrado.columns and 'lon' in df_filtrado.columns:
-    map_data = df_filtrado[['lat', 'lon', 'nombre', 'sexo', 'genero']].dropna()
+    # Filtrar puntos con coordenadas válidas
+    map_data = df_filtrado[['lat', 'lon', 'nombre', 'sexo', 'genero', 'departamento', 'municipio']].dropna(subset=['lat', 'lon'])
+
     if not map_data.empty:
-        st.subheader("📍 Ubicación de los encuestados")
+        st.markdown("### 🗺️ Ubicación de los encuestados")
+        st.caption("Los puntos se colorean según el sexo (puedes cambiar la variable en el código)")
+
         # Crear mapa con Plotly
         fig = px.scatter_mapbox(
             map_data,
             lat='lat',
             lon='lon',
             hover_name='nombre',
-            hover_data={'sexo': True, 'genero': True},
-            color='sexo',  # O cualquier otra variable categórica
+            hover_data={
+                'sexo': True,
+                'genero': True,
+                'departamento': True,
+                'municipio': True,
+                'lat': False,
+                'lon': False
+            },
+            color='sexo',  # Puedes cambiar a 'genero' o cualquier otra variable
             color_discrete_sequence=px.colors.qualitative.Set2,
             zoom=6,
-            height=500,
-            mapbox_style="open-street-map"  # Estilo gratuito y sin necesidad de token
+            height=550,
+            mapbox_style="open-street-map"  # Estilo gratuito, sin token necesario
         )
-        fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+
+        # Ajustar centro del mapa a la media de los puntos
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            mapbox=dict(
+                center=dict(
+                    lat=map_data['lat'].mean(),
+                    lon=map_data['lon'].mean()
+                )
+            )
+        )
         st.plotly_chart(fig, width='stretch')
+
+        # Opción: mostrar tabla de ubicaciones (colapsable)
+        with st.expander("📋 Ver tabla de ubicaciones"):
+            st.dataframe(
+                map_data[['nombre', 'departamento', 'municipio', 'lat', 'lon']],
+                use_container_width=True,
+                hide_index=True,
+                column_config={
+                    "nombre": "Nombre",
+                    "departamento": "Departamento",
+                    "municipio": "Municipio",
+                    "lat": st.column_config.NumberColumn("Latitud", format="%.6f"),
+                    "lon": st.column_config.NumberColumn("Longitud", format="%.6f")
+                }
+            )
     else:
-        st.info("No hay datos de ubicación disponibles.")
+        st.info("📍 No hay datos de ubicación disponibles para los filtros seleccionados.")
+else:
+    st.info("📍 El formulario no incluye datos de ubicación (latitud/longitud).")
+
+# ==========================================
+# PIE DE PÁGINA
+# ==========================================
+st.markdown("---")
+st.caption("Dashboard generado con Streamlit y Plotly • Datos procesados desde KoboToolbox")
