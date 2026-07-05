@@ -6,7 +6,7 @@ import plotly.express as px
 # CONFIGURACIÓN DE LA PÁGINA (siempre primero)
 # ==========================================
 st.set_page_config(
-    page_title="Dashboard Arauca",
+    page_title="1mer Tablero Diagnostico Comunidades",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
